@@ -11,6 +11,7 @@ import {
   orderBy,
   serverTimestamp,
   getDoc,
+  updateDoc,
 } from "firebase/firestore";
 
 // Firebase database credentials
@@ -96,4 +97,18 @@ const docRef = doc(db, "books", "ToSz9u0AL87kwiBg0mTi");
 // If data changes in the database, then fetch the data again
 onSnapshot(docRef, (doc) => {
   console.log(doc.data(), doc.id);
+});
+
+// updating a document
+const updateForm = document.querySelector(".update");
+updateForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+
+  const docRef = doc(db, "books", updateForm.id.value);
+
+  updateDoc(docRef, {
+    title: "Updated Title",
+  }).then(() => {
+    updateForm.reset();
+  });
 });
