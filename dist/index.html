@@ -6,9 +6,9 @@
   <title>Firebase 9</title>
 </head>
 <body>
-  <h1>Getting started with Firebase 9</h1>
-  <h2>Firebase Firestore</h2>
+  <h1>FIREBASE 9</h1>
 
+  <h3>Add a book with name and title :</h3>
   <form class="add">
     <label for="title">Title: </label>
     <input type="text" name="title" required>
@@ -18,6 +18,7 @@
     <button>Add a new Book</button>
   </form>
 
+  <h3>Delete a book by ID :</h3>
   <form class="delete">
     <label for="id">Document ID: </label>
     <input type="text" name="id" required>
@@ -25,11 +26,24 @@
     <button>Delete a Book</button>
   </form>
 
+  <h3>Update a book title by ID :</h3>
   <form class="update">
     <label for="id">Document ID: </label>
     <input type="text" name="id" required>
 
     <button>Update a Book</button>
+  </form>
+
+  <h1>FIREBASE AUTHENTICATOR</h1>
+
+  <h3>Sign Up a User :</h3>
+  <form class="signup">
+    <label for="email">Email: </label>
+    <input type="text" name="email">
+    <label for="password">Password: </label>
+    <input type="text" name="password">
+
+    <button>Sign Up</button>
   </form>
 
   <script src="bundle.js"></script>
