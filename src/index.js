@@ -8,15 +8,18 @@ import {
   doc,
   query,
   where,
+  orderBy,
+  serverTimestamp,
 } from "firebase/firestore";
 
+// Firebase database credentials
 const firebaseConfig = {
-  apiKey: "AIzaSyBhBjs-r9OE8ln3FtDnYd5tVoxNKBYvUXM",
-  authDomain: "fir-9-f72f8.firebaseapp.com",
-  projectId: "fir-9-f72f8",
-  storageBucket: "fir-9-f72f8.appspot.com",
-  messagingSenderId: "475116388815",
-  appId: "1:475116388815:web:59c8d268a995289455d2ba",
+  apiKey: "AIzaSyAaaf0KEr7y0acRJBUy3aYFlwRN0640SSE",
+  authDomain: "fir-9-ba6e1.firebaseapp.com",
+  projectId: "fir-9-ba6e1",
+  storageBucket: "fir-9-ba6e1.appspot.com",
+  messagingSenderId: "242750098212",
+  appId: "1:242750098212:web:0dedd4844264bc5a3e81b1"
 };
 // console.log('hi');
 
@@ -30,7 +33,7 @@ const db = getFirestore();
 const colRef = collection(db, "books");
 
 // queries
-const q = query(colRef, where("author", "==", "patrick rothfuss"))
+const q = query(colRef, orderBy('createdAt'))
 
 // // get collection data
 // getDocs(colRef)
@@ -63,6 +66,7 @@ addBookForm.addEventListener("submit", (event) => {
   addDoc(colRef, {
     title: addBookForm.title.value,
     author: addBookForm.author.value,
+    createdAt: serverTimestamp(),
   }).then(() => {
     addBookForm.reset();
   });
