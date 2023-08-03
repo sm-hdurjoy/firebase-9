@@ -10,6 +10,7 @@ import {
   where,
   orderBy,
   serverTimestamp,
+  getDoc,
 } from "firebase/firestore";
 
 // Firebase database credentials
@@ -19,7 +20,7 @@ const firebaseConfig = {
   projectId: "fir-9-ba6e1",
   storageBucket: "fir-9-ba6e1.appspot.com",
   messagingSenderId: "242750098212",
-  appId: "1:242750098212:web:0dedd4844264bc5a3e81b1"
+  appId: "1:242750098212:web:0dedd4844264bc5a3e81b1",
 };
 // console.log('hi');
 
@@ -33,7 +34,7 @@ const db = getFirestore();
 const colRef = collection(db, "books");
 
 // queries
-const q = query(colRef, orderBy('createdAt'))
+const q = query(colRef, orderBy("createdAt"));
 
 // // get collection data
 // getDocs(colRef)
@@ -49,7 +50,7 @@ const q = query(colRef, orderBy('createdAt'))
 //     console.log(err.message);
 //   });
 
-// Real time collection data
+// Real time collection data/invoke function whenever data changes in the database
 onSnapshot(q, (snapshot) => {
   let books = [];
   snapshot.docs.forEach((doc) => {
@@ -82,4 +83,17 @@ deleteBookForm.addEventListener("submit", (event) => {
   deleteDoc(docRef).then(() => {
     deleteBookForm.reset();
   });
+});
+
+// Get single document
+const docRef = doc(db, "books", "ToSz9u0AL87kwiBg0mTi");
+
+// getDoc(docRef)
+// .then((doc) => {
+//   console.log(doc.data(), doc.id);
+// })
+
+// If data changes in the database, then fetch the data again
+onSnapshot(docRef, (doc) => {
+  console.log(doc.data(), doc.id);
 });
