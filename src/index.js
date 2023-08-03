@@ -1,5 +1,14 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, getDocs, addDoc, deleteDoc, doc } from "firebase/firestore";
+import {
+  getFirestore,
+  collection,
+  onSnapshot,
+  addDoc,
+  deleteDoc,
+  doc,
+  query,
+  where,
+} from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBhBjs-r9OE8ln3FtDnYd5tVoxNKBYvUXM",
@@ -20,19 +29,31 @@ const db = getFirestore();
 // Collection ref
 const colRef = collection(db, "books");
 
-// get collection data
-getDocs(colRef)
-  .then((snapshot) => {
-    // console.log(snapshot.docs);
-    let books = [];
-    snapshot.docs.forEach((doc) => {
-      books.push({ ...doc.data(), id: doc.id });
-    });
-    console.log(books);
-  })
-  .catch((err) => {
-    console.log(err.message);
+// queries
+const q = query(colRef, where("author", "==", "patrick rothfuss"))
+
+// // get collection data
+// getDocs(colRef)
+//   .then((snapshot) => {
+//     // console.log(snapshot.docs);
+//     let books = [];
+//     snapshot.docs.forEach((doc) => {
+//       books.push({ ...doc.data(), id: doc.id });
+//     });
+//     console.log(books);
+//   })
+//   .catch((err) => {
+//     console.log(err.message);
+//   });
+
+// Real time collection data
+onSnapshot(q, (snapshot) => {
+  let books = [];
+  snapshot.docs.forEach((doc) => {
+    books.push({ ...doc.data(), id: doc.id });
   });
+  console.log(books);
+});
 
 // adding documents
 const addBookForm = document.querySelector(".add");
@@ -42,11 +63,9 @@ addBookForm.addEventListener("submit", (event) => {
   addDoc(colRef, {
     title: addBookForm.title.value,
     author: addBookForm.author.value,
-  })
-  .then (() => {
-    addBookForm.reset()
-  })
-
+  }).then(() => {
+    addBookForm.reset();
+  });
 });
 
 // deleting document
@@ -54,11 +73,9 @@ const deleteBookForm = document.querySelector(".delete");
 deleteBookForm.addEventListener("submit", (event) => {
   event.preventDefault();
 
-  const docRef = doc(db, 'books', deleteBookForm.id.value)
+  const docRef = doc(db, "books", deleteBookForm.id.value);
 
-  deleteDoc(docRef)
-  .then(() => {
-    deleteBookForm.reset()
-  })
-
+  deleteDoc(docRef).then(() => {
+    deleteBookForm.reset();
+  });
 });
