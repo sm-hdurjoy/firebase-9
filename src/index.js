@@ -61,7 +61,7 @@ const q = query(colRef, orderBy("createdAt"));
 //   });
 
 // Real time collection data/invoke function whenever data changes in the database
-onSnapshot(q, (snapshot) => {
+const unsubCol = onSnapshot(q, (snapshot) => {
   let books = [];
   snapshot.docs.forEach((doc) => {
     books.push({ ...doc.data(), id: doc.id });
@@ -104,7 +104,7 @@ const docRef = doc(db, "books", "ToSz9u0AL87kwiBg0mTi");
 // })
 
 // If data changes in the database, then fetch the data again
-onSnapshot(docRef, (doc) => {
+const unsubDoc = onSnapshot(docRef, (doc) => {
   console.log(doc.data(), doc.id);
 });
 
@@ -171,6 +171,15 @@ loginForm.addEventListener("submit", (event) => {
 });
 
 // Subscribe to AUTH change
-onAuthStateChanged(auth, (user) => {
+const unsubAuth = onAuthStateChanged(auth, (user) => {
   console.log("User status changed", user);
+});
+
+// Unsubscribe from changes (DB & AUTH)
+const unsubButton = document.querySelector(".unsub");
+unsubButton.addEventListener("click", () => {
+  console.log("Unsubscribing");
+  unsubCol();
+  unsubDoc();
+  unsubAuth();
 });
